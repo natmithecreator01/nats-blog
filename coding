@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nat's Blog</title>
+
+    <style>
+
+        body {
+
+            font-family: 'Comic Sans MS', sans-serif; /* Changed to Comic Sans */
+
+            background-color: #f0e6ff; /* Light purple background */
+
+            color: #333; /* Dark text */
+
+        }
+
+        .container {
+
+            max-width: 800px;
+
+            margin: 0 auto;
+
+            padding: 20px;
+
+        }
+
+        .post {
+
+            margin-bottom: 40px;
+
+        }
+
+        .post h2 {
+
+            color: #6a0dad; /* Dark purple heading */
+
+        }
+
+        .post p {
+
+            line-height: 1.6;
+
+        }
+
+        .button {
+
+            display: inline-block;
+
+            padding: 10px 20px;
+
+            background-color: #800080; /* Purple button */
+
+            color: #fff; /* White text */
+
+            text-decoration: none;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+        }
+
+        .button:hover {
+
+            background-color: #6a0dad; /* Darker purple on hover */
+
+        }
+
+        .post-footer {
+
+            margin-top: 20px;
+
+        }
+
+        .blog-link {
+
+            color: #6a0dad; /* Dark purple link color */
+
+            text-decoration: underline; /* Underline the link */
+
+            font-weight: bold; /* Make the link bold */
+
+            margin-top: 20px; /* Add some space above the link */
+
+            display: block; /* Make the link a block element for spacing */
+
+        }
+
+        .comments {
+
+            margin-top: 20px;
+
+            display: none;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+
+            <h1>Welcome to Nats Blog</h1>
+
+            <p>Hello, Im Nat and I wanted to make this blog to post my interests and hobby stuff so I set this up for everyone to see.</p>
+
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/800px-A_small_cup_of_coffee.JPG" alt="Coffee" width="300">
+
+        </header>
+
+       
+
+        <div class="post">
+
+            <h2>Construction</h2>
+
+            <p>hello this is my blog, it is currently under construction so it may not work quite yet</p>
+
+            <div class="post-footer">
+
+                <button class="button" onclick="toggleLike(this)">Like</button>
+
+                <button class="button" onclick="toggleComment(this)">Comment</button>
+
+                <textarea id="commentInput" placeholder="Enter your comment" style="display: none;"></textarea>
+
+                <button class="button" id="postCommentButton" onclick="postComment()" style="display: none;">Post Comment</button>
+
+                <button class="button" id="viewCommentsButton" onclick="viewComments(this)">View Comments</button>
+
+                <a href="mailto:?subject=Check out Nats Blog!&body=I found this awesome blog! Check it out: [https://your-username.github.io/nats-blog]" class="button">Share</a>
+
+            </div>
+
+            <div class="comments" id="commentsSection"></div>
+
+        </div>
+
+       
+
+        <footer>
+
+            <p>© 2024 Nat's Blog</p>
+
+            <a href="https://your-username.github.io/nats-blog" class="blog-link">Visit Nat's Blog</a>
+
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        let likeCount = 0;
+
+        let comments = [];
+
+
+        function toggleLike(button) {
+
+            if (button.classList.contains('liked')) {
+
+                likeCount--;
+
+                button.textContent = 'Like';
+
+                button.classList.remove('liked');
+
+            } else {
+
+                likeCount++;
+
+                button.textContent = 'Liked (' + likeCount + ')';
+
+                button.classList.add('liked');
+
+            }
+
+        }
+
+
+        function toggleComment(button) {
+
+            let commentInput = document.getElementById('commentInput');
+
+            let postCommentButton = document.getElementById('postCommentButton');
+
+            if (button.classList.contains('active')) {
+
+                button.textContent = 'Comment';
+
+                commentInput.style.display = 'none';
+
+                postCommentButton.style.display = 'none';
+
+                button.classList.remove('active');
+
+            } else {
+
+                button.textContent = 'Cancel';
+
+                commentInput.style.display = 'block';
+
+                postCommentButton.style.display = 'inline-block';
+
+                commentInput.focus();
+
+                button.classList.add('active');
+
+            }
+
+        }
+
+
+        function postComment() {
+
+            let commentInput = document.getElementById('commentInput');
+
+            let commentsSection = document.getElementById('commentsSection');
+
+            let viewCommentsButton = document.getElementById('viewCommentsButton');
+
+            if (commentInput.value.trim() !== '') {
+
+                comments.push(commentInput.value);
+
+                commentInput.value = '';
+
+                viewCommentsButton.textContent = 'View Comments (' + comments.length + ')';
+
+                let commentButton = document.querySelector('.post-footer .button[onclick="toggleComment(this)"]');
+
+                commentButton.textContent = 'Comment';
+
+                commentButton.classList.remove('active');
+
+                commentInput.style.display = 'none';
+
+                document.getElementById('postCommentButton').style.display = 'none';
+
+            }
+
+        }
+
+
+        function viewComments(button) {
+
+            let commentsSection = document.getElementById('commentsSection');
+
+            if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+
+                commentsSection.innerHTML = '';
+
+                comments.forEach(comment => {
+
+                    let commentParagraph = document.createElement('p');
+
+                    commentParagraph.textContent = comment;
+
+                    commentsSection.appendChild(commentParagraph);
+
+                });
+
+                commentsSection.style.display = 'block';
+
+                button.textContent = 'Hide Comments (' + comments.length + ')';
+
+            } else {
+
+                commentsSection.style.display = 'none';
+
+                button.textContent = 'View Comments (' + comments.length + ')';
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
